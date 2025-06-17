@@ -1,0 +1,27 @@
+{
+  "name": "custom-offer-worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mAntala/custom-offer-worker.git"
+  },
+  "keywords": [
+    "Node.js"
+  ],
+  "author": "Maroš Antala",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mAntala/custom-offer-worker/issues"
+  },
+  "homepage": "https://github.com/mAntala/custom-offer-worker#readme",
+  "dependencies": {
+    "cheerio": "^1.1.0",
+    "commander": "^14.0.0"
+  }
+}
