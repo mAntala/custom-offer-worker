@@ -10,44 +10,43 @@ program
 
 program
     .command('get')
+    .description('Get data from provided URL with CSS selector and save it to file')
     .argument('<url>', 'URL to scrape')
-    .requiredOption('--selector <selector>', 'CSS selector to extract data')
-    .requiredOption('--folder <folder>', 'File to save the extracted data')
-    .option('--file <file>', 'File to save the extracted data', 'index.html')
-    .action((url, options) => {
-        console.log(`Getting data from ${url}`);
+    .requiredOption('-s, --selector <selector>', 'CSS selector to extract data')
+    .requiredOption('-d, --dir <folder>', 'Directory to save the extracted data')
+    .option('-f, --file <file>', 'File to save the extracted data', 'index.html')
+    .action(async (url, options) => {
+        try {
+            console.log(`🚀 Getting data from ${url}`);
 
-        fetchWebsite(url)
-            .then((data) => {
-                const $ = load(data);
-                const content = $(options.selector);
-                const fileName = options.file || 'index.html';
+            const data = await fetchWebsite(url);
+            const $ = load(data);
+            const content = $(options.selector);
+            const fileName = options.file || 'index.html';
 
-                let fullHtml = '';
+            if (content.length === 0) {
+                console.warn(`🥲 No elements found with selector: ${options.selector}`);
+                return;
+            }
 
-                content.each((index, element) => {
-                    const siteHtml = $(element).html();
-                    const offerHtml = convertBulletsToList(siteHtml);
-                    fullHtml += offerHtml;
-                });
-
-                if(!fs.existsSync(options.folder)) {
-                    fs.mkdirSync('offers', { recursive: true });
-                }
-
-                if(!fs.existsSync(`offers/${options.folder}`)) {
-                    fs.mkdirSync(`offers/${options.folder}`, { recursive: true });
-                }
-
-                fs.writeFile(`offers/${options.folder}/${fileName}`, fullHtml, (err) => {
-                    if(err) {
-                        throw new Error(`Error writing file: ${err.message}`);
-                    }
-                });
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
+            let offerHtml = '';
+            content.each((index, element) => {
+                const siteHtml = $(element).html();
+                const selectorHtml = convertBulletsToList(siteHtml);
+                offerHtml += selectorHtml;
             });
+
+            const dirPath = `offers/${options.dir}`;
+            fs.mkdirSync(dirPath, { recursive: true });
+
+            const filePath = `${dirPath}/${fileName}`;
+            fs.writeFileSync(filePath, offerHtml);
+
+            console.log(`✅ Successfully saved data to: ${filePath}`);
+        } catch (error) {
+            console.error('❌ Error:', error.message);
+            process.exit(1);
+        }
     });
 
 program.parse();
