@@ -17,7 +17,7 @@ As alternative, you can use `npm run get-offers <URL> -- *rest of your arguments
 - `-f, --file` - optional - name of file to save HTML output 
 
 ### Example
-`node index.js get https://www.amazon.jobs/en/jobs/2999737/account-manager-german-speaker-amazon-business-amazon-business -s '#job-detail-body .section' -d PROFM-12345 -f index-24.html`
+`node index.js get 'https://www.amazon.jobs/en/jobs/2999737/account-manager-german-speaker-amazon-business-amazon-business' -s '#job-detail-body .section' -d PROFM-12345 -f index-24.html`
 
 
 ## Bugs
