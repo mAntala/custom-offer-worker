@@ -21,5 +21,5 @@ As alternative, you can use `npm run get-offers <URL> -- *rest of your arguments
 
 
 ## Bugs
-- If there is search param, e. g. `someurl.com?param=true`, program return error
-- CSS selectors has to be inside single or doble quates `'` or `"`
+- [x] If there is search param, e. g. `someurl.com?param=true`, program return error
+- [ ] CSS selectors has to be inside single or doble quates `'` or `"`
