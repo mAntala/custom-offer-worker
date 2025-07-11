@@ -1,7 +1,14 @@
 import fs from 'node:fs';
 import { program } from 'commander';
 import { load } from 'cheerio';
-import { fetchWebsite, convertBulletsToList } from './utils/helpers.js';
+import {
+    tasksPipeline,
+    fetchWebsite,
+    convertBulletsToList,
+    removeLinkTags,
+    removeEmptyParagraphs,
+    wrapBrToParagraph,
+} from './utils/helpers.js';
 
 program
     .name('Custom offer worker')
@@ -32,8 +39,13 @@ program
             let offerHtml = '';
             content.each((index, element) => {
                 const siteHtml = $(element).html();
-                const selectorHtml = convertBulletsToList(siteHtml);
-                offerHtml += selectorHtml;
+                const tasksResult = tasksPipeline(siteHtml, [
+                    removeLinkTags,
+                    wrapBrToParagraph,
+                    removeEmptyParagraphs,
+                    convertBulletsToList,
+                ]);
+                offerHtml += tasksResult;
             });
 
             const dirPath = `offers/${options.dir}`;
